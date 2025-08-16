@@ -1,50 +1,14 @@
-auto: 
-  name: AUTO
-  username: 'AUTO#6021'
-  client_id: '1220388740678029392'
-  default_prefix: 'auto$'
-  default_color: 0x3498DB
+nanban: 
+  name: Nanban
+  username: 'Nanban#3270'
+  client_id: '1406218928828448788'
+  default_prefix: 'n!!'
+  default_color: 0xD7D7D7
   extensions:
     - 'cogs.general'
-    - 'cogs.auto.announcements'
-    - 'cogs.auto.moderation'
-    - 'cogs.auto.utilities'
-    - 'cogs.auto.roles'
+    - 'cogs.nanban.utilities'
+    - 'cogs.nanban.moderation'
+    - 'cogs.nanban.voice'
+    - 'cogs.nanban.thirukkural'
+    - 'cogs.nanban.cosmic_con'
     - 'cogs.manage'
-eve:
-  name: EVE
-  username: 'EVE#4830'
-  client_id: '1220389672291795005'
-  default_prefix: 'eve?'
-  default_color: 0xBEBEFE
-  extensions:
-    - 'cogs.general'
-    - 'cogs.eve.voice'
-    - 'cogs.eve.watchlist'
-    - 'cogs.eve.meme'
-    - 'cogs.manage'
-mo:
-  name: M-O
-  username: 'GO-4#3988'
-  client_id: '1220391241825648691'
-  default_prefix: 'mo!'
-  default_color: 0x8A3AB9
-  extensions:
-    - 'cogs.general'
-    - 'cogs.mo.radio'
-    - 'cogs.mo.instagram'
-    - 'cogs.mo.transcriber'
-    - 'cogs.manage'
-go4:
-  name: GO-4
-  username: 'MO#9127'
-  client_id: '1379850203665924190'
-  default_prefix: 'go4&'
-  default_color: 0x5F9EA0
-  extensions:
-    - 'cogs.general'
-    - 'cogs.go4.assistant'
-    - 'cogs.go4.thirukkural'
-    - 'cogs.go4.cosmic_con'
-    - 'cogs.manage'
-

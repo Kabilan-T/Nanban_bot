@@ -168,10 +168,11 @@ class General(commands.Cog, name="General"):
     @commands.command( name="invite", description="Get the bot invite link.")
     @commands.has_permissions(administrator=True)
     async def invite(self, context: Context):
-        '''Send the bot invite link with permissions of admin'''
+        '''Send the bot invite link with permissions scope'''
+        permission_scope = 1759218604441591  # All permissions except administrator
         embed = discord.Embed(
             title="Invite",
-            description=f"Use this link to invite the bot to your server: https://discord.com/oauth2/authorize?client_id={self.bot.client_id}&scope=bot&permissions=8",
+            description=f"Use this link to invite the bot to your server: https://discord.com/oauth2/authorize?client_id={self.bot.client_id}&scope=bot&permissions={permission_scope}",
             color=self.bot.default_color,
             )
         await context.send(embed=embed)
