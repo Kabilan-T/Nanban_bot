@@ -12,6 +12,7 @@
 import os
 import discord
 from bots.base import BaseBot
+import hosting
 
 class NanbanBot(BaseBot):
     ''' Nanban bot class definition '''
@@ -24,4 +25,5 @@ if __name__ == '__main__':
     # Launch the bot
     TOKEN = os.getenv('NANBAN_BOT_TOKEN', None)
     nanban_bot = NanbanBot()
+    hosting.keep_alive()
     nanban_bot.run(TOKEN)
