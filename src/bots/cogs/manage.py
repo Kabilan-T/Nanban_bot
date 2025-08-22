@@ -26,6 +26,97 @@ class Manage(commands.Cog, name="Manage"):
         '''Initializes the bot management cog'''
         self.bot = bot
 
+    @commands.command( name="reload", description="Reload the bot cogs.")
+    @commands.has_permissions(administrator=True)
+    async def reload(self, context: Context):
+        '''Reload the bot cogs'''
+        (succeeded_reloads, failed_reloads, unloaded) = await self.bot.reload_extensions()
+        embed = discord.Embed(
+            title="Cogs Reloaded :gear:",
+            color=self.bot.default_color,
+            )
+        if len(succeeded_reloads) > 0:
+            embed.add_field(
+                name="Succeeded",
+                value=f"\n".join([f":thumbsup: `{cog}`" for cog in succeeded_reloads]),
+                inline=False,
+                )
+        if len(failed_reloads) > 0:
+            embed.add_field(
+                name="Failed",
+                value=f"\n".join([f":thumbsdown: `{cog}`" for cog in failed_reloads]),
+                inline=False,
+                )
+        if len(unloaded) > 0:
+            embed.add_field(
+                name="Unloaded",
+                value=f"\n".join([f":x: `{cog}`" for cog in unloaded]),
+                inline=False,
+                )
+        await context.send(embed=embed)
+
+    @commands.command( name="load_cog", description="Load a specific cog.")
+    @commands.has_permissions(administrator=True)
+    async def load_cog(self, context: Context, cog_name: str):
+        '''Load a specific cog'''
+        if not cog_name.startswith("cogs."):
+            cog_name = f'cogs.{self.bot.name.lower().replace("-", "")}.{cog_name}'
+        cog_name = f"bots.{cog_name}"
+        if cog_name in self.bot.extensions:
+            embed = discord.Embed(
+                title="Error",
+                description=f"`{cog_name}` is already loaded.",
+                color=discord.Color.red(),
+                )
+            await context.send(embed=embed)
+            return
+        try:
+            await self.bot.load_specific_extension(cog_name)
+            self.bot.log.info(f"Loaded extension {cog_name}")
+            embed = discord.Embed(
+                title="Cog Loaded",
+                description=f"`{cog_name}` has been loaded.",
+                color=self.bot.default_color,
+                )
+        except Exception as e:
+            embed = discord.Embed(
+                title="Error",
+                description=f"Failed to load `{cog_name}`: {e}",
+                color=discord.Color.red(),
+                )
+        await context.send(embed=embed)
+
+    @commands.command( name="unload_cog", description="Unload a specific cog.")
+    @commands.has_permissions(administrator=True)
+    async def unload_cog(self, context: Context, cog_name: str):
+        '''Unload a specific cog'''
+        if not cog_name.startswith("cogs."):
+            cog_name = f'cogs.{self.bot.name.lower().replace("-", "")}.{cog_name}'
+        cog_name = f"bots.{cog_name}"
+        if cog_name not in self.bot.extensions:
+            embed = discord.Embed(
+                title="Error",
+                description=f"`{cog_name}` is not loaded.",
+                color=discord.Color.red(),
+                )
+            await context.send(embed=embed)
+            return
+        try:
+            await self.bot.unload_specific_extension(cog_name)
+            self.bot.log.info(f"Unloaded extension {cog_name}")
+            embed = discord.Embed(
+                title="Cog Unloaded",
+                description=f"`{cog_name}` has been unloaded.",
+                color=self.bot.default_color,
+                )
+        except Exception as e:
+            embed = discord.Embed(
+                title="Error",
+                description=f"Failed to unload `{cog_name}`: {e}",
+                color=discord.Color.red(),
+                )
+        await context.send(embed=embed)
+
     @commands.command( name="set_log_channel", description="Set the log channel for the bot.")
     @commands.has_permissions(administrator=True)
     async def setlogchannel(self, context: Context, channel: discord.TextChannel):
