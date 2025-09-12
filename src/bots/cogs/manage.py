@@ -55,68 +55,6 @@ class Manage(commands.Cog, name="Manage"):
                 )
         await context.send(embed=embed)
 
-    @commands.command( name="load_cog", description="Load a specific cog.")
-    @commands.has_permissions(administrator=True)
-    async def load_cog(self, context: Context, cog_name: str):
-        '''Load a specific cog'''
-        if not cog_name.startswith("cogs."):
-            cog_name = f'cogs.{self.bot.name.lower().replace("-", "")}.{cog_name}'
-        cog_name = f"bots.{cog_name}"
-        if cog_name in self.bot.extensions:
-            embed = discord.Embed(
-                title="Error",
-                description=f"`{cog_name}` is already loaded.",
-                color=discord.Color.red(),
-                )
-            await context.send(embed=embed)
-            return
-        try:
-            await self.bot.load_specific_extension(cog_name)
-            self.bot.log.info(f"Loaded extension {cog_name}")
-            embed = discord.Embed(
-                title="Cog Loaded",
-                description=f"`{cog_name}` has been loaded.",
-                color=self.bot.default_color,
-                )
-        except Exception as e:
-            embed = discord.Embed(
-                title="Error",
-                description=f"Failed to load `{cog_name}`: {e}",
-                color=discord.Color.red(),
-                )
-        await context.send(embed=embed)
-
-    @commands.command( name="unload_cog", description="Unload a specific cog.")
-    @commands.has_permissions(administrator=True)
-    async def unload_cog(self, context: Context, cog_name: str):
-        '''Unload a specific cog'''
-        if not cog_name.startswith("cogs."):
-            cog_name = f'cogs.{self.bot.name.lower().replace("-", "")}.{cog_name}'
-        cog_name = f"bots.{cog_name}"
-        if cog_name not in self.bot.extensions:
-            embed = discord.Embed(
-                title="Error",
-                description=f"`{cog_name}` is not loaded.",
-                color=discord.Color.red(),
-                )
-            await context.send(embed=embed)
-            return
-        try:
-            await self.bot.unload_specific_extension(cog_name)
-            self.bot.log.info(f"Unloaded extension {cog_name}")
-            embed = discord.Embed(
-                title="Cog Unloaded",
-                description=f"`{cog_name}` has been unloaded.",
-                color=self.bot.default_color,
-                )
-        except Exception as e:
-            embed = discord.Embed(
-                title="Error",
-                description=f"Failed to unload `{cog_name}`: {e}",
-                color=discord.Color.red(),
-                )
-        await context.send(embed=embed)
-
     @commands.command( name="set_log_channel", description="Set the log channel for the bot.")
     @commands.has_permissions(administrator=True)
     async def setlogchannel(self, context: Context, channel: discord.TextChannel):
@@ -137,23 +75,6 @@ class Manage(commands.Cog, name="Manage"):
             )
         await context.send(embed=embed)
         self.bot.log.info(f"Log channel set to {channel.mention}", context.guild)
-
-    @commands.command( name="get_logs", description="Send the recent log file.")
-    @commands.has_permissions(administrator=True)
-    async def getlogs(self, context: Context):
-        '''Get the recent log file'''
-        file_name = self.bot.log.log_file
-        with open(file_name, 'r') as f:
-            text = f.read()
-        file = discord.File(filename=file_name.split("/")[-1],
-                            fp=io.StringIO(text))
-        embed = discord.Embed(
-            title="Log File :scroll:",
-            description="Here is the recent log file. :file_folder:",
-            color=self.bot.default_color,
-            )
-        await context.reply(embed=embed, file=file)
-        self.bot.log.info(f"Log file sent to {context.author.name}", context.guild)
 
     @commands.command( name="get_data", description="Send the data of the bot as zip file.")
     @commands.has_permissions(administrator=True)
@@ -200,20 +121,6 @@ class Manage(commands.Cog, name="Manage"):
             )
         await context.send(embed=embed)
         await self.reload(context)
-
-    @commands.command( name="terminate", description="Terminate the bot.")
-    @commands.has_permissions(administrator=True)
-    async def terminate(self, context: Context):
-        '''Terminate the bot'''
-        embed = discord.Embed(
-            title="Terminating :wave:",
-            description="The bot is terminating.",
-            color=self.bot.default_color,
-            )
-        await context.send(embed=embed)
-        self.bot.log.info(f"Bot terminated by {context.author.name}", context.guild)
-        await self.bot.close()
-        self.bot.log.info(f"Bot terminated", context.guild)
     
 async def setup(bot):
     await bot.add_cog(Manage(bot))     
