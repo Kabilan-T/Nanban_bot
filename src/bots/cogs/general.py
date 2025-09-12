@@ -103,6 +103,7 @@ class General(commands.Cog, name="General"):
             await context.reply(embed=embed)
             return
         await channel.send(message)
+        self.bot.log.info(f"{context.author} used echo to send the text '{message}' in {channel.name}", context.guild)
     
     @commands.command( name="dm", description="Send a direct message to a user.")
     @commands.has_permissions(moderate_members=True)
@@ -137,7 +138,8 @@ class General(commands.Cog, name="General"):
             color=self.bot.default_color,
             )
         await context.reply(embed=embed)
-    
+        self.bot.log.info(f"{context.author} used DM to send the text '{message}' to {user.name}", context.guild)
+
     @commands.command( name="prefix", description="Change the bot prefix.")
     @commands.has_permissions(moderate_members=True)
     async def prefix(self, context: Context, prefix: str = None):
