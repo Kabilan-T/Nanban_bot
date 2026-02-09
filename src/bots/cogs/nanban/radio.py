@@ -99,37 +99,6 @@ class Radio(commands.Cog, name="Radio FM"):
         self.bot.log.info(f"Playing radio {radio_name} in {context.voice_client.channel.name}", context.guild)
         return
 
-    @commands.command(name="volume", description="Get or set the volume of the bot", aliases=["v"])
-    async def volume(self, context: Context, volume: int = None):
-        ''' Get or set the volume of the bot '''
-        if volume is None:
-            embed = discord.Embed(
-                title="Volume :loud_sound:",
-                description=f"Volume is {self.volume}",
-                color=self.bot.default_color,
-                )
-            await context.reply(embed=embed)
-            self.bot.log.info(f"Current volume is {self.volume} checked by {context.author} in {context.guild.name}", context.guild)
-        elif volume < 0 or volume > 100:
-            embed = discord.Embed(
-                title="Invalid volume :confused:",
-                description="Please enter a volume between 0 and 100",
-                color=self.bot.default_color,
-                )
-            await context.reply(embed=embed)
-            self.bot.log.warning(f"{context.author} tried to set the volume to invalid volume {volume} in {context.guild.name}", context.guild)
-        else:
-            self.volume = volume
-            if context.voice_client is not None:
-                context.voice_client.source.volume = volume/100
-            embed = discord.Embed(
-                title="Volume set :loud_sound:",
-                description=f"Volume set to {self.volume}",
-                color=self.bot.default_color,
-                )
-            await context.reply(embed=embed)
-            self.bot.log.info(f"{context.author} set the volume to {volume} in {context.guild.name}", context.guild)
-
     @commands.command(name="stop_radio", description="Stop radio in the voice channel", aliases=["stop", "st"])
     async def radio_stop(self, context: Context):
         ''' Stop radio in the voice channel '''
