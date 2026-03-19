@@ -6,29 +6,6 @@ if [[ ! $(basename "$(pwd)") == "Nanban_bot" ]]; then
     exit 1
 fi
 
-# Parse argument
-WITH_AUTO_UPDATE=false
-if [[ "$1" == "--with-auto-update" ]]; then
-    WITH_AUTO_UPDATE=true
-fi
-
-
-# Conditionally add cron job
-if $WITH_AUTO_UPDATE; then
-    echo "Checking for auto-update cron job..."
-    if crontab -l 2>/dev/null | grep -q "update.bash"; then
-        echo "Cron job already exists."
-    else
-        current_directory=$(pwd)
-        mkdir -p "$current_directory/logs"
-        # Add the cron job to run the update.bash script every 6 hours
-        (crontab -l 2>/dev/null; echo "0 */6 * * * bash $current_directory/update.bash >> $current_directory/logs/update.log 2>&1") | crontab -
-        echo "Cron job added to run update.bash every 6 hours."
-    fi
-else
-    echo "Skipping auto-update setup. Run './setup.bash --with-auto-update' if you want to enable it."
-fi
-
 # Check if runtime.txt file exists
 if [ ! -f "runtime.txt" ]; then
     echo "runtime.txt not found. Please create runtime.txt and specify the Python version."
@@ -60,11 +37,11 @@ fi
 
 # Install dependencies
 echo "Updating pip..."
-pip install --upgrade pip
+python -m pip install --upgrade pip
 
 # Install dependencies
 echo "Installing dependencies..."
-pip install --no-cache-dir -r requirements.txt --use-deprecated=legacy-resolver
+python -m pip install --no-cache-dir -r requirements.txt --use-deprecated=legacy-resolver
 
 echo "Setup complete. Please fill in your bot tokens in tokens.sh and then run the bot using run.bash."
 

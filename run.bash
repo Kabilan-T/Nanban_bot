@@ -35,21 +35,10 @@ fi
 
 echo "Virtual environment 'nanban_bot_env' activated."
 
-# Read Python version from runtime.txt
-python_version=$(cat runtime.txt)
-
-# Check if the desired Python version exists and is available in the system
-python_path=$(which "python$python_version")
-
-if [ -z "$python_path" ]; then
-    echo "Python $python_version is not installed. Please install the required version."
-    exit 1
-fi
-
 # Source token file
 source tokens.sh
 
 # Run the Nanban bot
-"$python_path" src/nanban.py
+python src/nanban.py
 
 exit 0
