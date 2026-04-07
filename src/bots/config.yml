@@ -10,6 +10,7 @@ nanban:
     - 'cogs.nanban.moderation'
     - 'cogs.nanban.voice'
     - 'cogs.nanban.radio'
+    - 'cogs.nanban.announcements'
     - 'cogs.nanban.thirukkural'
     - 'cogs.nanban.cosmic_con'
     - 'cogs.manage'
