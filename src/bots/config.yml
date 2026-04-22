@@ -14,3 +14,4 @@ nanban:
     - 'cogs.nanban.thirukkural'
     - 'cogs.nanban.cosmic_con'
     - 'cogs.manage'
+    - 'cogs.dev_control'
